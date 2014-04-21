@@ -43,7 +43,7 @@ if ('development' === app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/:id', content.findOne);
-//app.post('/content/save', content.addContent);
+app.post('/content/save', content.addContent);
 
 http.createServer(function (req, res) {
     res.writeHead(200, {
