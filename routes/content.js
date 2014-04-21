@@ -53,45 +53,45 @@ exports.findOne = function(req, res){
 
 exports.addContent = function (req, res){
     
-    if (req.method == 'POST') {
-        
-        // Clear
-        mongoose.models = {};
-        mongoose.modelSchemas = {};
-        
-        var body = '';
-        
-        // get the Posted data & store in var body
-        req.on('data', function (data) {
-            body += data;
-
-            var dictionarySchema = new mongoose.Schema({
-                term: String,
-                ipa: [String],
-                meanings: [{content: String, type: { type: String } }],
-                ethmology: String,
-                related: [String],
-                synonyms: [String],
-                audio: [{ type: { type: String }, file: String}]    
-            });
-
-            // Compile a 'Dictionary' model using the dictionarySchema as the structure.
-            // Mongoose also creates a MongoDB collection called 'Dictionary' for these documents.
-            var Dictionary = mongoose.model('Dictionary', dictionarySchema);
-            var parsedObj = JSON.parse(body);
-            var dictionary = new Dictionary(parsedObj);
-            
-            // Check if word already exist
-            console.log(parsedObj.term);
-            
-            dictionary.save(function (err, respObj) {
-                if(err) console.log(err);
-                res.send([{status: "Successfully Saved" }]);
-            });
-            
-        });
-        
-    }
+//    if (req.method == 'POST') {
+//        
+//        // Clear
+//        mongoose.models = {};
+//        mongoose.modelSchemas = {};
+//        
+//        var body = '';
+//        
+//        // get the Posted data & store in var body
+//        req.on('data', function (data) {
+//            body += data;
+//
+//            var dictionarySchema = new mongoose.Schema({
+//                term: String,
+//                ipa: [String],
+//                meanings: [{content: String, type: { type: String } }],
+//                ethmology: String,
+//                related: [String],
+//                synonyms: [String],
+//                audio: [{ type: { type: String }, file: String}]    
+//            });
+//
+//            // Compile a 'Dictionary' model using the dictionarySchema as the structure.
+//            // Mongoose also creates a MongoDB collection called 'Dictionary' for these documents.
+//            var Dictionary = mongoose.model('Dictionary', dictionarySchema);
+//            var parsedObj = JSON.parse(body);
+//            var dictionary = new Dictionary(parsedObj);
+//            
+//            // Check if word already exist
+//            console.log(parsedObj.term);
+//            
+//            dictionary.save(function (err, respObj) {
+//                if(err) console.log(err);
+//                res.send([{status: "Successfully Saved" }]);
+//            });
+//            
+//        });
+//        
+//    }
     
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", '*');
