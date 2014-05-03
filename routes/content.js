@@ -114,18 +114,9 @@ exports.retriveContent = function (req, res) {
             App.ManageContent.sendAjaxRequest(url, "GET", "", function (resp) {
                 resp = JSON.parse(resp);
 
+                console.log(resp.suggestions);
                 // No data found
-                if (!resp) {
-
-                    App.ManageContent.setHeaderInfo(res, {
-                        status: 200,
-                        send: {
-                            request: id,
-                            result: null
-                        }
-                    });
-
-                } else {
+                if (!resp || !resp.suggestions) {
 
                     // Save content to database
                     var dictionary = new Dictionary(resp);
@@ -142,11 +133,28 @@ exports.retriveContent = function (req, res) {
 
                     });
 
+                } else if(resp.suggestions) {
+                    
+                    App.ManageContent.setHeaderInfo(res, {
+                        status: 200,
+                        send: resp
+                    });
+                    
+                }else{
+                    
+                    App.ManageContent.setHeaderInfo(res, {
+                        status: 200,
+                        send: {
+                            request: id,
+                            result: null,
+                        }
+                    });
+                    
                 }
 
             });
 
-            // Found data from database – send this!
+            // Found content from database – send this!
         } else {
             App.ManageContent.setHeaderInfo(res, {
                 status: 200,
