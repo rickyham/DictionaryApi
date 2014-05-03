@@ -2,7 +2,11 @@
   "name": "dictionary-api",
   "description": "Building a better dictionary!",
   "version": "0.0.1",
+<<<<<<< HEAD
   "private": true,
+=======
+  "private": false,
+>>>>>>> ba5f9410477471a5f851a1a57abcd6a757b2cf9e
   "engines": {
     "node": "0.10.x",
     "npm": "1.3.x"

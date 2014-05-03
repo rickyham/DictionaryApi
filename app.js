@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> ba5f9410477471a5f851a1a57abcd6a757b2cf9e
 /**
  * Module dependencies.
  */
@@ -17,7 +21,11 @@ mongoose.connect("mongodb://dictionary:dictionary121@ds031329.mongolab.com:31329
 var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error: '));
+<<<<<<< HEAD
 db.once('open', function callback() {
+=======
+db.once('open', function callback (){
+>>>>>>> ba5f9410477471a5f851a1a57abcd6a757b2cf9e
     console.log("Mother Fucker DB is Connected!");
 });
 
@@ -37,15 +45,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' === app.get('env')) {
+<<<<<<< HEAD
     app.use(express.errorHandler());
 }
 
 app.get('/', routes.index);
 app.get('/:id', content.retriveContent);
+=======
+  app.use(express.errorHandler());
+}
+
+app.get('/', routes.index);
+app.get('/:id', content.findOne);
+app.post('/content/save', content.addContent);
+>>>>>>> ba5f9410477471a5f851a1a57abcd6a757b2cf9e
 
 http.createServer(function (req, res) {
     res.writeHead(200, {
         'Content-Type': 'text/plain',
+<<<<<<< HEAD
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET'
     });
@@ -55,3 +73,12 @@ http.createServer(function (req, res) {
 app.listen(app.get('port'));
 
 console.log("Listening on port " + app.get('port'));
+=======
+        'Access-Control-Allow-Origin' : '*',
+        'Access-Control-Allow-Methods': 'GET'
+    });
+    
+});
+
+app.listen(app.get('port'));
+>>>>>>> ba5f9410477471a5f851a1a57abcd6a757b2cf9e
