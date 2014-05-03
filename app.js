@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -18,7 +17,7 @@ mongoose.connect("mongodb://dictionary:dictionary121@ds031329.mongolab.com:31329
 var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error: '));
-db.once('open', function callback (){
+db.once('open', function callback() {
     console.log("Mother Fucker DB is Connected!");
 });
 
@@ -38,20 +37,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' === app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 }
 
 app.get('/', routes.index);
-app.get('/:id', content.findOne);
-app.post('/content/save', content.addContent);
+app.get('/:id', content.retriveContent);
 
 http.createServer(function (req, res) {
     res.writeHead(200, {
         'Content-Type': 'text/plain',
-        'Access-Control-Allow-Origin' : '*',
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET'
     });
-    
+
 });
 
 app.listen(app.get('port'));
