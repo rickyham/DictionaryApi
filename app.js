@@ -32,6 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
+app.use(express.bodyParser());
 app.use(express.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -43,6 +44,7 @@ if ('development' === app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/:id', content.retriveContent);
+app.post('/log/query', content.logQuery);
 
 http.createServer(function (req, res) {
     res.writeHead(200, {

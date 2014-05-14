@@ -10,20 +10,21 @@ App.ManageContent = (function () {
         _public = {};
 
     _public.setHeaderInfo = function (res, obj) {
+        obj.methods = obj.methods || 'GET, PUT, POST';
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", '*');
-        res.setHeader("Access-Control-Allow-Methods", 'GET,PUT,POST');
+        res.setHeader("Access-Control-Allow-Methods", obj.methods);
         res.statusCode = obj.status;
         res.send(obj.send);
     };
 
     _public.sendAjaxRequest = function (url, method, data, callback) {
-        
+
         var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
         var xmlhttp = new XMLHttpRequest();
 
         xmlhttp.onreadystatechange = function () {
-        
+
             switch (xmlhttp.readyState) {
 
             case 1:
@@ -36,7 +37,7 @@ App.ManageContent = (function () {
                 //   console.log("proccessing request");
                 break;
             case 4:
-                    
+
                 if (xmlhttp.status === 200) {
                     callback([xmlhttp.responseText]);
                 }
@@ -114,7 +115,6 @@ exports.retriveContent = function (req, res) {
             App.ManageContent.sendAjaxRequest(url, "GET", "", function (resp) {
                 resp = JSON.parse(resp);
 
-                console.log(resp.suggestions);
                 // No data found
                 if (!resp || !resp.suggestions) {
 
@@ -133,15 +133,15 @@ exports.retriveContent = function (req, res) {
 
                     });
 
-                } else if(resp.suggestions) {
-                    
+                } else if (resp.suggestions) {
+
                     App.ManageContent.setHeaderInfo(res, {
                         status: 200,
                         send: resp
                     });
-                    
-                }else{
-                    
+
+                } else {
+
                     App.ManageContent.setHeaderInfo(res, {
                         status: 200,
                         send: {
@@ -149,7 +149,7 @@ exports.retriveContent = function (req, res) {
                             result: null,
                         }
                     });
-                    
+
                 }
 
             });
@@ -163,4 +163,82 @@ exports.retriveContent = function (req, res) {
         }
 
     });
+};
+
+
+exports.logQuery = function (req, res) {
+
+    // Clear
+    mongoose.models = {};
+    mongoose.modelSchemas = {};
+
+    // Schema
+    var logQuerySchema = new mongoose.Schema({
+        content: {
+            selected: String,
+            context: String,
+            contextHtml: String
+        },
+        meta: {
+            uuid: String,
+            appVersion: String,
+            timestamp: String,
+            page: {
+                domain: String,
+                url: String,
+                title: String,
+                referrer: String,
+            },
+            eventType: String,
+            location: {
+                area_code: String,
+                city: String,
+                country_code: String,
+                country_name: String,
+                ip: String,
+                latitude: Number,
+                longitude: Number,
+                metro_code: String,
+                region_code: String,
+                region_name: String,
+                zipcode: String
+            },
+            navigator: {
+                appCodeName: String,
+                appName: String,
+                appVersion: String,
+                cookieEnabled: Boolean,
+                doNotTrack: String,
+                language: String,
+                onLine: Boolean,
+                platform: String,
+                product: String,
+                productSub: String,
+                userAgnt: String,
+                vendor: String,
+                vendorSub: String
+            }
+
+        }
+
+    });
+
+    var LogQuery = mongoose.model('QueryLogs', logQuerySchema);
+
+    logQuery = new LogQuery(req.body);
+
+    logQuery.save(function (err) {
+        if (err) return handleError(err);
+        LogQuery.findById(logQuery, function (err, doc) {
+            if (err) return handleError(err);
+            App.ManageContent.setHeaderInfo(res, {
+                status: 200,
+                methods: 'POST',
+                send: {
+                    status: 'success'
+                }
+            });
+        });
+    });
+
 };
