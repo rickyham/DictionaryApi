@@ -177,7 +177,8 @@ exports.logQuery = function (req, res) {
         content: {
             selected: String,
             context: String,
-            contextHtml: String
+            contextHtml: String,
+            closeContext: String
         },
         meta: {
             uuid: String,
