@@ -218,6 +218,19 @@ exports.logQuery = function (req, res) {
                 userAgnt: String,
                 vendor: String,
                 vendorSub: String
+            },
+            options: {
+                automaticallyPlaySound: Boolean,
+                popupClickKey: String,
+                hideWithEscape: Boolean,
+                showExamples: Boolean,
+                showPOS: Boolean,
+                showIPA: Boolean,
+                showRelated: Boolean,
+                showSynonyms: Boolean,
+                showAntonyms: Boolean,
+                showLinks: Boolean,
+                showEtymology: Boolean
             }
 
         }
