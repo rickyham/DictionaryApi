@@ -191,18 +191,31 @@ exports.logQuery = function (req, res) {
                 referrer: String,
             },
             eventType: String,
+            //            location: {
+            //                area_code: String,
+            //                city: String,
+            //                country_code: String,
+            //                country_name: String,
+            //                ip: String,
+            //                latitude: Number,
+            //                longitude: Number,
+            //                metro_code: String,
+            //                region_code: String,
+            //                region_name: String,
+            //                zipcode: String
+            //            },
+
             location: {
-                area_code: String,
+                source: String,
+                host: String,
+                lang: String,
+                countryName: String,
+                countryCode: String,
                 city: String,
-                country_code: String,
-                country_name: String,
-                ip: String,
-                latitude: Number,
-                longitude: Number,
-                metro_code: String,
-                region_code: String,
-                region_name: String,
-                zipcode: String
+                region: String,
+                latitude: String,
+                longitude: String,
+                timezone: String
             },
             navigator: {
                 appCodeName: String,
