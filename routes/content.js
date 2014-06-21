@@ -184,6 +184,7 @@ exports.logQuery = function (req, res) {
             uuid: String,
             appVersion: String,
             timestamp: String,
+            dateTime: String,
             page: {
                 domain: String,
                 url: String,
