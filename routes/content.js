@@ -58,9 +58,9 @@ app.ManageContent = (function () {
     };
 
     _public.removeEmptyProperties = function (objString) {
-        
+
         var obj = JSON.parse(objString);
-        
+
         for (var prop in obj) {
             if (obj.hasOwnProperty(prop) && obj[prop].length === 0) {
                 delete obj[prop];
@@ -143,16 +143,17 @@ exports.retriveContent = function (req, res) {
                     var dictionary = new Dictionary(resp);
 
                     console.log(dictionary);
-                    
+
                     dictionary.save(function (err, resp) {
                         if (err) {
                             console.log(err);
                         }
-                    });
 
-                    app.ManageContent.setHeaderInfo(res, {
-                        status: 200,
-                        send: resp
+                        app.ManageContent.setHeaderInfo(res, {
+                            status: 200,
+                            send: resp
+                        });
+                        
                     });
 
                     // Return suggestions
