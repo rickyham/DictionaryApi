@@ -4,5 +4,5 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Dictionary' , description: 'A better Dictionary API'});
+  res.render('index', { title: 'Keeptionary' , description: 'Building a better Dictionary'});
 };

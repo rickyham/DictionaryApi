@@ -2,15 +2,15 @@
  * Manage Content.
  */
 
-var App = App || {};
+var app = app || {};
 
-App.ManageContent = (function () {
+app.ManageContent = (function () {
 
     var _private = {},
         _public = {};
 
     _public.setHeaderInfo = function (res, obj) {
-        obj.methods = obj.methods || 'GET, PUT, POST';
+        obj.methods = obj.methods || 'GET';
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", '*');
         res.setHeader("Access-Control-Allow-Methods", obj.methods);
@@ -57,6 +57,19 @@ App.ManageContent = (function () {
 
     };
 
+    _public.removeEmptyProperties = function (objString) {
+        
+        var obj = JSON.parse(objString);
+        
+        for (var prop in obj) {
+            if (obj.hasOwnProperty(prop) && obj[prop].length === 0) {
+                delete obj[prop];
+            }
+        }
+
+        return obj;
+    };
+
     return _public;
 
 }());
@@ -99,10 +112,17 @@ exports.retriveContent = function (req, res) {
     // Find a single dictionary item by "term".
     Dictionary.findOne({
         term: id
+    }, {
+        '_id': 0,
+        '__v': 0,
+        'meanings._id': 0,
+        'audio._id': 0
     }, function (err, respObjDb) {
         if (err) {
             console.log(err);
         }
+
+        respObjDb = app.ManageContent.removeEmptyProperties(JSON.stringify(respObjDb));
 
         //No data found
         if (!respObjDb) {
@@ -112,37 +132,41 @@ exports.retriveContent = function (req, res) {
                 url = dictionaryApiUrl.replace('%query%', id);
 
             // Send ajax req to open API
-            App.ManageContent.sendAjaxRequest(url, "GET", "", function (resp) {
+            app.ManageContent.sendAjaxRequest(url, "GET", "", function (resp) {
+
                 resp = JSON.parse(resp);
 
-                // No data found
+                // Log resp obj
                 if (!resp || !resp.suggestions) {
 
                     // Save content to database
                     var dictionary = new Dictionary(resp);
 
+                    console.log(dictionary);
+                    
                     dictionary.save(function (err, resp) {
                         if (err) {
                             console.log(err);
                         }
-
-                        App.ManageContent.setHeaderInfo(res, {
-                            status: 200,
-                            send: resp
-                        });
-
                     });
 
-                } else if (resp.suggestions) {
-
-                    App.ManageContent.setHeaderInfo(res, {
+                    app.ManageContent.setHeaderInfo(res, {
                         status: 200,
                         send: resp
                     });
 
+                    // Return suggestions
+                } else if (resp.suggestions) {
+
+                    app.ManageContent.setHeaderInfo(res, {
+                        status: 200,
+                        send: resp
+                    });
+
+                    // Return null
                 } else {
 
-                    App.ManageContent.setHeaderInfo(res, {
+                    app.ManageContent.setHeaderInfo(res, {
                         status: 200,
                         send: {
                             request: id,
@@ -156,7 +180,8 @@ exports.retriveContent = function (req, res) {
 
             // Found content from database – send this!
         } else {
-            App.ManageContent.setHeaderInfo(res, {
+
+            app.ManageContent.setHeaderInfo(res, {
                 status: 200,
                 send: respObjDb
             });
@@ -250,11 +275,11 @@ exports.logQuery = function (req, res) {
         if (err) return handleError(err);
         LogQuery.findById(logQuery, function (err, doc) {
             if (err) return handleError(err);
-            App.ManageContent.setHeaderInfo(res, {
+            app.ManageContent.setHeaderInfo(res, {
                 status: 200,
                 methods: 'POST',
                 send: {
-                    status: 'success'
+                    status: 200
                 }
             });
         });

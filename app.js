@@ -3,11 +3,11 @@
  */
 
 var express = require('express'),
-    routes = require('./routes'),
-    content = require('./routes/content'),
-    http = require('http'),
-    path = require('path'),
-    app = express();
+	routes = require('./routes'),
+	content = require('./routes/content'),
+	http = require('http'),
+	path = require('path'),
+	app = express();
 
 // database connection
 var mongoose = require('mongoose');
@@ -18,8 +18,8 @@ var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error: '));
 
-db.once('open', function callback (){
-    console.log("Mother Fucker DB is Connected!");
+db.once('open', function callback() {
+	console.log("Mother Fucker DB is Connected!");
 });
 
 // Environments variables
@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' === app.get('env')) {
-    app.use(express.errorHandler());
+	app.use(express.errorHandler());
 }
 
 app.get('/', routes.index);
@@ -47,11 +47,11 @@ app.get('/:id', content.retriveContent);
 app.post('/log/query', content.logQuery);
 
 http.createServer(function (req, res) {
-    res.writeHead(200, {
-        'Content-Type': 'text/plain',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET'
-    });
+	res.writeHead(200, {
+		'Content-Type': 'text/plain',
+		'Access-Control-Allow-Origin': '*',
+		'Access-Control-Allow-Methods': 'GET'
+	});
 
 });
 
