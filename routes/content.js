@@ -220,17 +220,12 @@ exports.logQuery = function (req, res) {
             eventType: String,
             location: {
                 area_code: String,
-                asn: String,
                 city: String,
                 continent_code: String,
                 country: String,
                 country_code: String,
                 country_code3: String,
                 dma_code: String,
-//                ip: String,
-//                isp: String,
-//                latitude: Number,
-//                longitude: Number,
                 region: String,
                 region_code: String,
                 timezone: String
